@@ -1,0 +1,29 @@
+name: Deploy to Hugging Face Spaces
+
+# Run the workflow when code is pushed to the 'main' or 'master' branch
+on:
+  push:
+    branches: [ main, master ] # Modify this if your main branch is named differently
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    # Steps for the deployment job
+    steps:
+      - name: Checkout repository code
+        uses: actions/checkout@v4
+        
+      - name: Push to Hugging Face Hub (Space)
+        # Uses the official Hugging Face action to push contents
+        uses: huggingface/push-to-hub@v1.0.0
+        with:
+          # Uses the secret created in GitHub Settings
+          hf_token: ${{ secrets.HF_TOKEN }}
+          
+          # TARGET SPACE ID: Your Space on Hugging Face
+          repo_id: sarahireneriya/drugclassification 
+          
+          repo_type: space 
+          
+          commit_message: "CI/CD: Automated deployment from GitHub commit ${{ github.sha }}"
